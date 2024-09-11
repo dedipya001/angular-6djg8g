@@ -1,0 +1,51 @@
+<div class="container" [ngClass]="{ 'dark-theme': isDarkTheme }">
+  <h1>Train Seat Reservation</h1>
+
+  <div class="theme-toggle">
+    <label class="switch">
+      <input type="checkbox" (change)="toggleTheme()" />
+      <span class="slider round"></span>
+    </label>
+    <span>{{ isDarkTheme ? 'Dark' : 'Light' }} Theme</span>
+  </div>
+
+  <div class="form-group">
+    <label for="numSeats">Number of Seats to Book (1-7):</label>
+    <input
+      id="numSeats"
+      type="number"
+      [(ngModel)]="numSeats"
+      min="1"
+      max="7"
+      class="form-control"
+    />
+    <button (click)="bookSeats()" class="btn">Book Seats</button>
+  </div>
+
+  <h2>Booked Seats: {{ bookedSeats.join(', ') }}</h2>
+
+  <div class="train-container">
+    <div class="train">
+      <div class="locomotive"></div>
+      <div class="seat-layout">
+        <div
+          *ngFor="let seat of seats"
+          class="seat"
+          [ngClass]="{
+            'booked-seat': seat.isBooked,
+            'available-seat': !seat.isBooked
+          }"
+          (click)="toggleSeat(seat)"
+        >
+          {{ seat.seatNumber }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <app-notification
+    [message]="notificationMessage"
+    [show]="showNotification"
+    (hideNotification)="hideNotification()"
+  ></app-notification>
+</div>
